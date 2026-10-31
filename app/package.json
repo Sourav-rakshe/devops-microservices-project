@@ -1,0 +1,9 @@
+{
+  "name": "devops-microservice",
+  "version": "1.0.0",
+  "description": "Production-ready Node.js microservice for CI/CD Kubernetes pipeline",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
