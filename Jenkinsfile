@@ -2,9 +2,8 @@ pipeline {
     agent any
 
     environment {
-        APP_NAME   = 'devops-microservice'
-        IMAGE_TAG  = "${BUILD_NUMBER}"
-        KUBECONFIG = '/var/lib/jenkins/.kube/config'
+        APP_NAME  = 'devops-microservice'
+        IMAGE_TAG = "${BUILD_NUMBER}"
     }
 
     stages {
@@ -26,19 +25,19 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 echo 'Loading image to Minikube cluster...'
-                sh "minikube image load ${APP_NAME}:${IMAGE_TAG}"
+                sh "sudo -u ec2-user minikube image load ${APP_NAME}:${IMAGE_TAG}"
                 echo 'Applying Kubernetes manifests...'
-                sh "kubectl apply -f k8s/deployment.yaml"
-                sh "kubectl apply -f k8s/service.yaml"
-                sh "kubectl set image deployment/microservice-deployment microservice-container=${APP_NAME}:${IMAGE_TAG}"
+                sh "sudo -u ec2-user kubectl apply -f k8s/deployment.yaml"
+                sh "sudo -u ec2-user kubectl apply -f k8s/service.yaml"
+                sh "sudo -u ec2-user kubectl set image deployment/microservice-deployment microservice-container=${APP_NAME}:${IMAGE_TAG}"
             }
         }
 
         stage('Verify Rollout') {
             steps {
                 echo 'Verifying deployment rollout status...'
-                sh "kubectl rollout status deployment/microservice-deployment --timeout=60s"
-                sh "kubectl get pods -l app=microservice"
+                sh "sudo -u ec2-user kubectl rollout status deployment/microservice-deployment --timeout=60s"
+                sh "sudo -u ec2-user kubectl get pods -l app=microservice"
             }
         }
     }
