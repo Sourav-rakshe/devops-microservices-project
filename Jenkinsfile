@@ -2,8 +2,9 @@ pipeline {
     agent any
 
     environment {
-        APP_NAME = 'devops-microservice'
-        IMAGE_TAG = "${BUILD_NUMBER}"
+        APP_NAME   = 'devops-microservice'
+        IMAGE_TAG  = "${BUILD_NUMBER}"
+        KUBECONFIG = '/var/lib/jenkins/.kube/config'
     }
 
     stages {
